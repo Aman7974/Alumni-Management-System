@@ -1,0 +1,106 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  ALUMNI
+  STUDENT
+}
+
+model User {
+  id                 String   @id @default(uuid())
+  name               String
+  email              String   @unique
+  password           String?  // Hashed password for manual auth
+  role               Role     @default(STUDENT)
+  avatar             String?
+  batch              String?
+  bio                String?
+  skills             String[] 
+  interests          String[]
+  education          String?
+  department         String?
+  company            String?
+  jobTitle           String?
+  mentoringAvailable Boolean  @default(false)
+
+  // Relations
+  jobs               Job[]
+  forumPosts         ForumPost[]
+  eventsAttending    EventAttendee[]
+  projectsContributed ProjectContributor[]
+  
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Job {
+  id          String   @id @default(uuid())
+  title       String
+  company     String
+  location    String
+  type        String
+  description String
+  postedById  String
+  postedBy    User     @relation(fields: [postedById], references: [id])
+  postedAt    DateTime @default(now())
+}
+
+model Event {
+  id          String          @id @default(uuid())
+  title       String
+  date        DateTime
+  location    String
+  description String
+  attendees   EventAttendee[]
+}
+
+model EventAttendee {
+  eventId String
+  userId  String
+  event   Event @relation(fields: [eventId], references: [id])
+  user    User  @relation(fields: [userId], references: [id])
+
+  @@id([eventId, userId])
+}
+
+model ForumPost {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  category  String
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Project {
+  id           String               @id @default(uuid())
+  title        String
+  description  String
+  tags         String[]
+  repoLink     String
+  contributors ProjectContributor[]
+}
+
+model ProjectContributor {
+  projectId String
+  userId    String
+  project   Project @relation(fields: [projectId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+
+  @@id([projectId, userId])
+}
+
+model DonationCampaign {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  goal        Float
+  raised      Float  @default(0)
+}
