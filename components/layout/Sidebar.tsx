@@ -34,11 +34,13 @@ export function Sidebar() {
   return (
     <div className="flex h-full w-64 flex-col bg-white border-r border-slate-200">
       <div className="flex h-24 items-center justify-center p-4">
-        {/* Mock Logo */}
-        <div className="flex items-center gap-2">
-          <div className="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center border-2 border-green-600">
-            <div className="h-6 w-6 text-green-700 font-bold text-xl">✽</div>
-          </div>
+        {/* Real Logo */}
+        <div className="flex items-center justify-center w-full h-full">
+          <img 
+            src="/assets/logo.png" 
+            alt="Alumni Management System Logo" 
+            className="max-h-full max-w-full object-contain"
+          />
         </div>
       </div>
       

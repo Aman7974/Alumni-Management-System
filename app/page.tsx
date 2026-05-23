@@ -9,9 +9,11 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 
 export default function DashboardPage() {
-  const { currentUser, jobs, events, forums, campaigns } = useAppContext();
+  const { currentUser, jobs, events, forums, campaigns, users } = useAppContext();
 
   if (!currentUser) return null;
+
+  const role = currentUser.role?.toUpperCase();
 
   return (
     <div className="space-y-6">
@@ -19,9 +21,9 @@ export default function DashboardPage() {
         <div className="relative z-10">
           <h1 className="text-3xl font-bold tracking-tight mb-2">Welcome back, {currentUser.name}!</h1>
           <p className="text-blue-100 max-w-2xl">
-            {currentUser.role === 'Student'
+            {role === 'STUDENT'
               ? "Check out the latest job openings and upcoming events to kickstart your career."
-              : currentUser.role === 'Alumni'
+              : role === 'ALUMNI'
                 ? "Thank you for staying connected. See how you can contribute or mentor current students."
                 : "Manage the platform and view system overview."}
           </p>
@@ -41,7 +43,7 @@ export default function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {currentUser.role === 'Student' && (
+            {role === 'STUDENT' && (
               <div className="space-y-4">
                 <p className="text-sm text-slate-600">Based on your skills in <span className="font-semibold text-slate-800">React and Node.js</span>, we recommend these opportunities:</p>
                 {jobs.slice(0, 1).map(job => (
@@ -59,12 +61,22 @@ export default function DashboardPage() {
                 ))}
               </div>
             )}
-            {currentUser.role === 'Alumni' && (
+            {role === 'ALUMNI' && (
               <div className="space-y-4">
-                <p className="text-sm text-slate-600">You have been an active mentor! There are 3 new students looking for guidance in <span className="font-semibold text-slate-800">{currentUser.department || 'your field'}</span>.</p>
+                <p className="text-sm text-slate-600">You have been an active mentor! There are new students looking for guidance in <span className="font-semibold text-slate-800">{currentUser.department || 'your field'}</span>.</p>
                 <Link href="/mentorship">
                   <Button>
                     View Mentorship Requests
+                  </Button>
+                </Link>
+              </div>
+            )}
+            {role !== 'STUDENT' && role !== 'ALUMNI' && (
+              <div className="space-y-4">
+                <p className="text-sm text-slate-600">System overview looks good. There are <span className="font-semibold text-slate-800">{users?.length || 0}</span> registered users and <span className="font-semibold text-slate-800">{campaigns?.length || 0}</span> active campaigns on the platform.</p>
+                <Link href="/profile">
+                  <Button>
+                    Manage System Settings
                   </Button>
                 </Link>
               </div>

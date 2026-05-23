@@ -15,7 +15,7 @@ export default function BatchDetailsPage() {
   const [search, setSearch] = useState('');
 
   // Get alumni for this batch
-  const batchAlumni = users.filter(u => u.role === 'Alumni' && u.batch === year);
+  const batchAlumni = users.filter(u => u.role?.toUpperCase() === 'ALUMNI' && u.batch === year);
   
   const filteredAlumni = batchAlumni.filter(u => 
     u.name.toLowerCase().includes(search.toLowerCase()) || 

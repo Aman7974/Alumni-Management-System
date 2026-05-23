@@ -11,9 +11,9 @@ export default function MentorshipPage() {
   const { currentUser, users } = useAppContext();
   const [selectedMentor, setSelectedMentor] = useState<string | null>(null);
 
-  const mentors = users.filter(u => u.role === 'Alumni' && u.mentoringAvailable);
+  const mentors = users.filter(u => u.role?.toUpperCase() === 'ALUMNI' && u.mentoringAvailable);
 
-  if (currentUser?.role === 'Alumni') {
+  if (currentUser?.role?.toUpperCase() === 'ALUMNI') {
     return (
       <div className="space-y-6">
         <h1 className="text-2xl font-bold tracking-tight text-slate-900">Mentorship Dashboard</h1>
@@ -46,8 +46,8 @@ export default function MentorshipPage() {
       <div className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-4">
           {mentors.map(mentor => (
-            <Card 
-              key={mentor.id} 
+            <Card
+              key={mentor.id}
               className={`cursor-pointer transition-all ${selectedMentor === mentor.id ? 'ring-2 ring-blue-500 shadow-md' : 'hover:border-blue-300'}`}
               onClick={() => setSelectedMentor(mentor.id)}
             >
