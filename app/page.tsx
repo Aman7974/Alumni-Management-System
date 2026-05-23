@@ -19,11 +19,11 @@ export default function DashboardPage() {
         <div className="relative z-10">
           <h1 className="text-3xl font-bold tracking-tight mb-2">Welcome back, {currentUser.name}!</h1>
           <p className="text-blue-100 max-w-2xl">
-            {currentUser.role === 'Student' 
-              ? "Check out the latest job openings and upcoming events to kickstart your career." 
+            {currentUser.role === 'Student'
+              ? "Check out the latest job openings and upcoming events to kickstart your career."
               : currentUser.role === 'Alumni'
-              ? "Thank you for staying connected. See how you can contribute or mentor current students."
-              : "Manage the platform and view system overview."}
+                ? "Thank you for staying connected. See how you can contribute or mentor current students."
+                : "Manage the platform and view system overview."}
           </p>
         </div>
         {/* Decorative background shapes */}
@@ -111,7 +111,7 @@ export default function DashboardPage() {
                   <p className="text-sm text-slate-600 line-clamp-1 mt-1">{post.content}</p>
                   <div className="flex items-center mt-2 gap-2">
                     <Badge variant="secondary">{post.category}</Badge>
-                    <span className="text-xs text-slate-400">{post.date}</span>
+                    <span className="text-xs text-slate-400">{typeof post.createdAt === 'string' ? post.createdAt : new Date(post.createdAt).toLocaleDateString()}</span>
                   </div>
                 </div>
               ))}
@@ -128,7 +128,7 @@ export default function DashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-             <div className="space-y-4">
+            <div className="space-y-4">
               {campaigns.slice(0, 1).map(campaign => (
                 <div key={campaign.id}>
                   <h4 className="font-medium text-slate-900 mb-1">{campaign.title}</h4>
@@ -143,7 +143,7 @@ export default function DashboardPage() {
                   Donate Now
                 </Button>
               </Link>
-             </div>
+            </div>
           </CardContent>
         </Card>
       </div>
